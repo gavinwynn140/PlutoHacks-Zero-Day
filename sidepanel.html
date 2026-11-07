@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)file:///C:/Users/Gavin/Downloads/zero-day/sidepanel.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zero Day</title>
+  <link rel="stylesheet" href="./sidepanel_files/sidepanel.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="app-header">
+    <div class="header-pattern" aria-hidden="true"></div>
+    <div class="brand">
+      <img class="logo" src="./sidepanel_files/logo.png" alt="">
+      <h1>Zero Day</h1>
+    </div>
+    <button type="button" id="open-settings" class="icon-button" aria-label="Open settings">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h8M18 6h2M4 12h2M12 12h8M4 18h10M20 18h0"></path><circle cx="15" cy="6" r="2.2"></circle><circle cx="9" cy="12" r="2.2"></circle><circle cx="17" cy="18" r="2.2"></circle></svg>
+    </button>
+  </header>
+
+  <main class="app-main">
+
+    <!-- ============ SCAN TAB ============ -->
+    <!-- Two views, like a short walkthrough: 1) home with the scan button,
+         2) the threat assessment. JS swaps between them. -->
+    <section id="panel-scan" role="tabpanel" aria-labelledby="tab-scan">
+
+      <!-- VIEW 1: home + scanning progress -->
+      <div id="scan-home">
+        <!-- Figma slot: images/scan-hero.svg -->
+        <img id="scan-hero" class="art art-hero" src="./sidepanel_files/scan-hero.svg" alt="">
+        <h2 class="scan-title">Is this page safe?</h2>
+        <p class="intro-center">Open a website or email, then press the button. We'll look for scam warning signs and explain what we find.</p>
+
+        <button type="button" id="scan-button" class="primary">Analyze this page</button>
+        <p class="hint center">Zero Day only looks at a page when you press this button.</p>
+
+        <div id="progress" class="progress" role="progressbar" aria-label="Scan progress" aria-valuemin="0" aria-valuemax="100" hidden="">
+          <div id="progress-fill" class="progress-fill"></div>
+        </div>
+        <p id="scan-status" class="status" role="status"></p>
+
+        <!-- Shown when a scan can't run (no permission, empty page, etc.) -->
+        <div id="scan-error" class="notice" role="alert" hidden="">
+          <p id="scan-error-title" class="notice-title"></p>
+          <p id="scan-error-text"></p>
+          <button type="button" id="grant-button" class="secondary" hidden="">Allow scanning on every page</button>
+          <p id="grant-hint" class="hint" hidden="">Chrome will ask you to confirm. Zero Day still only looks at a page when you press Analyze.</p>
+        </div>
+      </div>
+
+      <!-- VIEW 2: threat assessment -->
+      <div id="scan-results" hidden="">
+        <h2 class="results-title">Threat Assessment</h2>
+
+        <!-- Percent chance of a threat. data-band: none | 1..5 (green to red) -->
+        <p id="percent" class="percent" data-band="none" aria-live="polite">
+          <span id="percent-number" class="percent-number"></span>
+          <span id="percent-caption" class="percent-caption"></span>
+        </p>
+        <div id="meter" class="meter" data-band="none" role="img" aria-label="Threat meter">
+          <div id="meter-fill" class="meter-fill"></div>
+        </div>
+        <div class="meter-scale" aria-hidden="true"><span>Safe</span><span>Not safe</span></div>
+        <p id="risk-line" class="risk-line"></p>
+
+        <div id="verdict" class="verdict">
+          <h3 id="verdict-headline"></h3>
+          <p id="verdict-explainer"></p>
+          <p id="scanned-host" class="hint"></p>
+          <p id="demo-note" class="hint" hidden="">This is a demo result based on simple keywords. The real safety checker isn't connected yet, so don't rely on this percentage.</p>
+        </div>
+
+        <!-- What we noticed: tap one to mark it on the page -->
+        <section id="findings" class="findings" aria-labelledby="findings-title" hidden="">
+          <h3 id="findings-title">What we noticed</h3>
+          <p class="hint">Tap a finding to see where it is on the page.</p>
+          <div id="finding-list"></div>
+          <button type="button" id="visual-button" class="primary">Visual Analysis: show all on the page</button>
+          <button type="button" id="clear-button" class="secondary" hidden="">Remove the marks</button>
+          <p id="mark-status" class="status" role="status"></p>
+        </section>
+
+        <section class="recs" aria-labelledby="recs-title">
+          <h3 id="recs-title">What you can do</h3>
+          <ul id="action-list" class="actions"></ul>
+        </section>
+
+        <button type="button" id="rescan-button" class="secondary">Analyze this page again</button>
+      </div>
+
+      <details class="privacy">
+        <summary>What does Zero Day look at?</summary>
+        <p>Before a page is checked, Zero Day hides personal details such as email addresses, phone numbers, card numbers and street addresses. It never reads anything you've typed into a form.</p>
+        <p id="privacy-report">Nothing has been scanned yet.</p>
+        <p id="privacy-preview" class="preview" hidden=""></p>
+      </details>
+    </section>
+
+    <!-- ============ ALERTS TAB ============ -->
+    <section id="panel-alerts" role="tabpanel" aria-labelledby="tab-alerts" hidden="">
+      <h2>Latest alerts</h2>
+      <p class="intro">Scams and security problems that could affect you personally, with simple steps to stay safe.</p>
+      <p id="sample-note" class="note" hidden="">These are sample alerts so you can see how this page will look. Real alerts will appear here once the news feed is connected.</p>
+
+      <div id="alert-list"></div>
+      <p id="alerts-message" class="intro" hidden=""></p>
+      <p id="alerts-live" class="sr-only" role="status"></p>
+
+      <!-- Alerts the person has ticked as done. Out of the way, but easy to find again. -->
+      <details id="alert-archive" class="archive" hidden="">
+        <summary id="archive-summary">Done (0)</summary>
+        <p class="hint">Tick the box on an alert when you've taken care of it. It moves here. Untick it to bring it back.</p>
+        <div id="archive-list"></div>
+      </details>
+
+      <!-- Optional newsletter. The alerts above are always here, whether or not anyone signs up. -->
+      <section class="panel-tint" aria-labelledby="newsletter-title">
+        <h3 id="newsletter-title">Want alerts in your email too?</h3>
+        <p>This is optional. You'll see every alert on this page either way.</p>
+        <form id="newsletter-form">
+          <label for="newsletter-email">Your email address</label>
+          <input id="newsletter-email" type="email" required="" autocomplete="email" placeholder="name@example.com">
+          <button type="submit" class="primary">Sign up for emails</button>
+        </form>
+        <div id="newsletter-done" hidden="">
+          <p id="newsletter-done-text"></p>
+          <button type="button" id="newsletter-stop" class="secondary">Stop emails</button>
+        </div>
+        <p id="newsletter-message" class="status" role="status"></p>
+      </section>
+    </section>
+
+    <!-- ============ COMMUNITY TAB ============ -->
+    <section id="panel-community" role="tabpanel" aria-labelledby="tab-community" hidden="">
+      <h2>Stories from people like you</h2>
+      <p class="intro">When something strange happens, it helps to know you're not alone. Read what others have run into, or share your own.</p>
+      <p class="note">These are sample stories for now. Sharing is saved on this computer only until the community service is connected.</p>
+
+      <form id="post-form" class="post-form">
+        <h3>Share what happened</h3>
+        <label for="post-topic">How did it reach you?</label>
+        <select id="post-topic">
+          <option>Email</option>
+          <option>Text message</option>
+          <option>Phone call</option>
+          <option>Website or pop-up</option>
+          <option>Something else</option>
+        </select>
+        <label for="post-name">Name to show (first name or nickname)</label>
+        <input id="post-name" type="text" maxlength="30" autocomplete="off">
+        <label class="check-row" for="post-anon">
+          <input id="post-anon" type="checkbox" checked="">
+          <span><strong>Post anonymously</strong>Your story is shared without a name. Nothing that could identify you is sent.</span>
+        </label>
+        <label for="post-title">A short title</label>
+        <input id="post-title" type="text" maxlength="80" required="">
+        <label for="post-text">What happened?</label>
+        <textarea id="post-text" maxlength="800" required=""></textarea>
+        <p class="hint">Phone numbers, emails and addresses are hidden automatically before anything is shared.</p>
+        <button type="submit" class="primary">Share my story</button>
+        <p id="post-message" class="status" role="status"></p>
+      </form>
+
+      <div id="post-list"></div>
+    </section>
+  </main>
+
+  <nav class="tabbar" role="tablist" aria-label="Sections">
+    <button type="button" role="tab" id="tab-scan" class="tab" data-panel="panel-scan" aria-selected="true" aria-controls="panel-scan">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"></path><path d="M9 12l2 2 4-4"></path></svg>
+      <span>Scan</span>
+    </button>
+    <button type="button" role="tab" id="tab-alerts" class="tab" data-panel="panel-alerts" aria-selected="false" aria-controls="panel-alerts" tabindex="-1">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg>
+      <span>Alerts</span>
+      <span id="alerts-badge" class="badge" hidden=""></span>
+    </button>
+    <button type="button" role="tab" id="tab-community" class="tab" data-panel="panel-community" aria-selected="false" aria-controls="panel-community" tabindex="-1">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><circle cx="17" cy="9" r="2.5"></circle><path d="M17 14c2.5 0 4.5 2 4.5 4.5"></path></svg>
+      <span>Community</span>
+    </button>
+  </nav>
+
+</div>
+
+<!-- Extension pages can't run inline scripts, so everything lives in these files. -->
+<script src="./sidepanel_files/settings.js"></script>
+<script src="./sidepanel_files/config.js"></script>
+<script src="./sidepanel_files/sidepanel.js"></script>
+
+
+</body></html>

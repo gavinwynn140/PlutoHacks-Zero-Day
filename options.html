@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zero Day settings</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body class="page-options">
+<div class="options-wrap">
+
+  <h1>Zero Day settings</h1>
+  <p class="intro">Changes save automatically and show up in the side panel right away.</p>
+
+  <!-- ============ EASIER TO READ ============ -->
+  <section class="setting-group" aria-labelledby="read-title">
+    <h2 id="read-title">Make it easier to read</h2>
+
+    <label for="text-scale">Text size: <span id="text-scale-value">100%</span></label>
+    <input id="text-scale" type="range" min="60" max="200" step="10" value="100">
+    <p class="hint">Slide left for smaller text, or right for larger text and bigger buttons. This whole page changes as you slide, so you can see the result.</p>
+    <button type="button" id="text-reset" class="secondary">Back to normal size</button>
+
+    <label class="check-row" for="compact">
+      <input id="compact" type="checkbox">
+      <span><strong>Compact view</strong>Tighter spacing and fewer helper sentences. Useful if you keep the side panel narrow.</span>
+    </label>
+    <label class="check-row" for="high-contrast">
+      <input id="high-contrast" type="checkbox">
+      <span><strong>High contrast</strong>Black text on white with strong outlines.</span>
+    </label>
+    <label class="check-row" for="reduce-motion">
+      <input id="reduce-motion" type="checkbox">
+      <span><strong>Less movement</strong>The threat meter jumps to its answer instead of sliding.</span>
+    </label>
+  </section>
+
+  <!-- ============ SCANNING ACCESS ============ -->
+  <section class="setting-group" aria-labelledby="access-title">
+    <h2 id="access-title">Scanning access</h2>
+    <p>By default, Zero Day can read a page only after you click its shield icon at the top of Chrome. If you'd rather not click the icon on every new website, you can allow scanning on every page.</p>
+    <p class="hint">Zero Day still only looks at a page when you press Scan this page.</p>
+    <p id="access-status" role="status"><strong></strong></p>
+    <button type="button" id="access-toggle" class="secondary">Allow scanning on every page</button>
+  </section>
+
+  <p id="flash" class="flash" role="status" hidden></p>
+</div>
+
+<script src="settings.js"></script>
+<script src="options.js"></script>
+</body>
+</html>
