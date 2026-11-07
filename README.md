@@ -3,7 +3,7 @@ PlutoHacks Submission 2026: Build, Protect, Innovate
 
 To use this project, place the entire repo into a folder. Go to chrome://extensions and turn on developer tools, then select the option labelled "Load Unpacked." That will allow you to host the extension through your browser.
 
-**## AI Usage**
+## AI Usage
 Our team used generative AI during our creation process to save time when building our prompts and our extension's backend. We used Google Gemini to pressure-test and question our initial Claude prompt. We used Claude AI to generate the base extension features, but we planned out the UI and drafted the logo by hand so that it matched our exact specifications. We configured text styling through CSS and configured API connections (we used a Gemini API connection to process web pages during scans) and some internal logic using JavaScript. While AI played a large role in the process of building our project's code, we fine tuned and customized to make it our own until the project matched our vision.
 
 ## Inspiration
